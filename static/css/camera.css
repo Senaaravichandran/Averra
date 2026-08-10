@@ -1,1 +1,0 @@
-.camera-preview #camera-video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .35s ease; z-index:0; mix-blend-mode:screen; }.camera-preview #camera-video.active { opacity:.72; }.camera-grid,.camera-scan,.camera-copy,.camera-action { z-index:1; }

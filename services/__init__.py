@@ -1,2 +1,0 @@
-"""Averra service layer."""
-
