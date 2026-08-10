@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f7f8fc">
   <meta name="description" content="Averra is a calm, intelligent attendance workspace for modern teams and classrooms.">
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
   <title>{{ app_name }} · Attendance, with clarity</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/camera.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Primary navigation">
       <div class="brand-lockup">
@@ -49,7 +51,7 @@
       </div>
     </aside>
 
-    <main class="main-content">
+    <main class="main-content" id="main-content" tabindex="-1">
       <header class="topbar">
         <div class="breadcrumbs"><span>Northstar Institute</span><b>/</b><span class="current-crumb" id="crumb-label">Overview</span></div>
         <div class="topbar-actions">

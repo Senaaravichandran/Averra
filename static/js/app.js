@@ -218,4 +218,14 @@ async function startCamera() {
   } catch (error) { showToast('Camera permission was not granted.', 'error'); }
 }
 
-document.addEventListener('DOMContentLoaded', () => { bindEvents(); loadOverview(); });
+document.addEventListener('DOMContentLoaded', () => {
+  bindEvents();
+  loadOverview();
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/static/sw.js').catch(() => {});
+  document.addEventListener('keydown', (event) => {
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    const shortcut = Number(event.key);
+    const views = ['overview', 'attendance', 'students', 'schedule', 'reports'];
+    if (shortcut >= 1 && shortcut <= views.length && document.activeElement.tagName !== 'INPUT') navigate(views[shortcut - 1]);
+  });
+});

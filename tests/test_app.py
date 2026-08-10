@@ -25,6 +25,13 @@ def test_health_reports_service_and_recognition(client):
     assert payload["status"] == "ok"
     assert payload["service"] == "Averra"
     assert "recognition" in payload
+    assert response.headers["X-Content-Type-Options"] == "nosniff"
+
+
+def test_app_shell_and_pwa_assets_are_available(client):
+    assert client.get("/").status_code == 200
+    assert client.get("/static/manifest.json").get_json()["short_name"] == "Averra"
+    assert client.get("/static/sw.js").status_code == 200
 
 
 def test_overview_contains_seeded_workspace(client):

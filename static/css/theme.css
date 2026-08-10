@@ -9,3 +9,5 @@ body.dark-mode .table-panel th, body.dark-mode .report-table th, body.dark-mode 
 body.dark-mode .panel-link, body.dark-mode .text-button { color:#aaa3ff; }
 body.dark-mode .grid-lines i, body.dark-mode .activity-row, body.dark-mode .schedule-item, body.dark-mode .table-panel td, body.dark-mode .report-table td { border-color:#2b2c43; }
 body.dark-mode .progress-track { background:#303149; }
+.skip-link { position:fixed; left:14px; top:12px; transform:translateY(-160%); z-index:100; background:#25253a; color:#fff; padding:10px 13px; border-radius:7px; font-size:11px; transition:transform .2s; }.skip-link:focus { transform:none; }
+:focus-visible { outline:3px solid rgba(117,101,238,.42); outline-offset:3px; }
