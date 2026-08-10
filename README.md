@@ -31,7 +31,7 @@ The first run creates `instance/averra.sqlite3` and seeds a Northstar Institute 
 
 ## Camera recognition
 
-Install the optional native packages from `requirements.txt`, then place one clear profile photo per person in `students/`. The filename becomes the recognition label. Start the local OpenCV loop with:
+Install the optional native packages from `requirements-camera.txt`, then place one clear profile photo per person in `students/`. The filename becomes the recognition label. Start the local OpenCV loop with:
 
 ```powershell
 python camera.py
@@ -62,4 +62,3 @@ tests/                 API and workflow coverage
 ## Production notes
 
 For a production deployment, place Averra behind HTTPS, set a long random `AVERRA_SECRET`, use a managed database if multiple application instances are needed, and configure authentication/role-based access before exposing the API publicly. The current build is intentionally self-contained and ideal for a local institution, a pilot, or a strong base for those next operational layers.
-

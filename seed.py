@@ -6,14 +6,14 @@ from database import get_db, init_db
 
 
 STUDENTS = [
-    ("Aarav Menon", "aarav@northstar.edu", "AV-1042", "Computer Science", "AM"),
-    ("Mira Shah", "mira@northstar.edu", "AV-1043", "Product Design", "MS"),
-    ("Rohan Iyer", "rohan@northstar.edu", "AV-1044", "Data Science", "RI"),
-    ("Zoya Kapoor", "zoya@northstar.edu", "AV-1045", "Computer Science", "ZK"),
-    ("Ishaan Rao", "ishaan@northstar.edu", "AV-1046", "Business Analytics", "IR"),
-    ("Anaya Singh", "anaya@northstar.edu", "AV-1047", "Product Design", "AS"),
-    ("Kabir Patel", "kabir@northstar.edu", "AV-1048", "Data Science", "KP"),
-    ("Tara Bose", "tara@northstar.edu", "AV-1049", "Computer Science", "TB"),
+    ("Jobs", "jobs@northstar.edu", "AV-1042", "Computer Science", "JB"),
+    ("Ratan Tata", "tata@northstar.edu", "AV-1043", "Product Design", "RT"),
+    ("Sadmona", "sadmona@northstar.edu", "AV-1044", "Data Science", "SD"),
+    ("Tesla", "tesla@northstar.edu", "AV-1045", "Computer Science", "TS"),
+    ("Hari Babu", "haribabu@northstar.edu", "AV-1046", "Business Analytics", "HB"),
+    ("Senaa", "senaa@northstar.edu", "AV-1047", "Product Design", "SN"),
+    ("Shek", "shek@northstar.edu", "AV-1048", "Data Science", "SK"),
+    ("Vnkat", "vnkat@northstar.edu", "AV-1049", "Computer Science", "VK"),
 ]
 
 
@@ -60,4 +60,3 @@ def seed() -> None:
 if __name__ == "__main__":
     seed()
     print("Averra demo data is ready.")
-

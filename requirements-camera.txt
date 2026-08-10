@@ -1,0 +1,5 @@
+-r requirements.txt
+
+# Optional local camera recognition support.
+opencv-python==4.12.0.88
+face-recognition==1.3.0

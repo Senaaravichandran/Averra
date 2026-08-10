@@ -43,7 +43,8 @@ class RecognitionService:
                 encodings = self._face_recognition.face_encodings(image)
                 if encodings:
                     self.encodings.append(encodings[0])
-                    self.labels.append(path.stem.replace("_", " ").title())
+                    profile_labels = {"tata": "Ratan Tata", "haribabu": "Hari Babu"}
+                    self.labels.append(profile_labels.get(path.stem.casefold(), path.stem.replace("_", " ").title()))
             except (OSError, ValueError):
                 continue
         return len(self.labels)
@@ -71,4 +72,3 @@ class RecognitionService:
             top, right, bottom, left = location
             matches.append({"name": label, "confidence": round(max(0, 1 - distance), 3), "box": {"top": top, "right": right, "bottom": bottom, "left": left}})
         return matches
-
