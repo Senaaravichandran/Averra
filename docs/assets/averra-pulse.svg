@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">Averra attendance platform</title>
+  <desc id="desc">An animated violet pulse moving through the Averra wordmark.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#1d1e39"/><stop offset="1" stop-color="#6252d9"/></linearGradient>
+    <linearGradient id="line" x1="0" x2="1"><stop stop-color="#b9b2ff" stop-opacity="0"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#f4c0aa" stop-opacity="0"/></linearGradient>
+  </defs>
+  <rect width="1200" height="300" rx="30" fill="url(#bg)"/>
+  <g transform="translate(82 82) skewX(-10)"><rect width="23" height="65" rx="11" fill="#bdb6ff" opacity=".55"/><rect x="34" y="-25" width="23" height="90" rx="11" fill="#dcd8ff" opacity=".8"/><rect x="68" y="-55" width="23" height="120" rx="11" fill="#fff"/></g>
+  <text x="215" y="151" fill="#fff" font-family="Arial,sans-serif" font-size="74" font-weight="700" letter-spacing="-4">Averra</text>
+  <text x="220" y="194" fill="#d7d3ff" font-family="monospace" font-size="16" letter-spacing="4">ATTENDANCE, WITH CLARITY</text>
+  <path d="M220 225 H980" stroke="url(#line)" stroke-width="3" stroke-linecap="round" stroke-dasharray="120 760"><animate attributeName="stroke-dashoffset" from="0" to="-880" dur="3.4s" repeatCount="indefinite"/></path>
+  <circle cx="220" cy="225" r="6" fill="#f4c0aa"><animate attributeName="cx" values="220;980;220" dur="3.4s" repeatCount="indefinite"/></circle>
+</svg>
+

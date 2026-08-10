@@ -25,5 +25,4 @@ jobs:
       - name: Run tests
         run: pytest
       - name: Compile application modules
-        run: python -m py_compile app.py camera.py database.py seed.py services/recognition.py
-
+        run: python -m py_compile backend/app.py backend/camera.py backend/wsgi.py backend/averra/__init__.py backend/averra/api.py backend/averra/db.py backend/averra/services/recognition.py scripts/run.py

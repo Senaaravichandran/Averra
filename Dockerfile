@@ -13,11 +13,11 @@ RUN groupadd --system averra && useradd --system --gid averra --create-home aver
 COPY requirements-deploy.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY averra ./averra
-COPY migrations ./migrations
-COPY templates ./templates
-COPY static ./static
-COPY app.py wsgi.py gunicorn.conf.py ./
+COPY backend ./backend
+COPY database/migrations ./database/migrations
+COPY frontend/templates ./frontend/templates
+COPY frontend/static ./frontend/static
+COPY gunicorn.conf.py ./
 
 RUN mkdir -p /app/instance && chown -R averra:averra /app
 USER averra
@@ -26,4 +26,4 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
   CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/ready', timeout=3)"
 
-CMD ["gunicorn", "--config", "gunicorn.conf.py", "wsgi:app"]
+CMD ["gunicorn", "--config", "gunicorn.conf.py", "backend.wsgi:app"]

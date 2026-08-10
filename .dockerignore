@@ -8,8 +8,7 @@ __pycache__
 instance
 *.sqlite3
 *.db
-students
+data/profiles
 tests
 README.md
 .env
-

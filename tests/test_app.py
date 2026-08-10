@@ -1,10 +1,10 @@
 import pytest
 from werkzeug.security import generate_password_hash
 
-from averra import create_app
-from averra.config import Settings
-from averra.db import init_db
-from averra.seed import seed_demo_data
+from backend.averra import create_app
+from backend.averra.config import Settings
+from backend.averra.db import init_db
+from backend.averra.seed import seed_demo_data
 
 
 @pytest.fixture()
