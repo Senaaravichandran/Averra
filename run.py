@@ -1,0 +1,10 @@
+"""Convenient local entrypoint for Averra."""
+
+from app import app
+from seed import seed
+
+
+if __name__ == "__main__":
+    seed()
+    app.run(host="127.0.0.1", port=5050, debug=True)
+

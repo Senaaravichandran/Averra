@@ -13,3 +13,9 @@ build/
 *.egg-info/
 .DS_Store
 
+# Legacy prototype artifacts kept locally for reference, not part of Averra.
+project.py
+recface.py
+samplecv.py
+attendance.xlsx
+20*.csv
