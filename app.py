@@ -1,6 +1,6 @@
 """Averra attendance platform: web app and JSON API."""
 
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 import csv
 import io
@@ -31,6 +31,13 @@ def bootstrap() -> None:
 
 def today_iso() -> str:
     return date.today().isoformat()
+
+
+def parse_date(value: str | None, fallback: date) -> date:
+    try:
+        return date.fromisoformat(value) if value else fallback
+    except ValueError as exc:
+        raise ValueError("Dates must use YYYY-MM-DD format.") from exc
 
 
 def api_error(message: str, status: int = 400):
@@ -100,7 +107,10 @@ def create_student():
 
 @app.get("/api/attendance")
 def attendance():
-    selected_date = request.args.get("date", today_iso())
+    try:
+        selected_date = parse_date(request.args.get("date"), date.today()).isoformat()
+    except ValueError as exc:
+        return api_error(str(exc))
     db = get_db()
     records = db.execute("""
         SELECT a.id, a.student_id, a.attendance_date, a.check_in, a.method, a.confidence,
@@ -118,6 +128,9 @@ def mark_attendance():
     student_ref = payload.get("student_id")
     if not student_ref:
         return api_error("Choose a student to mark present.")
+    method = payload.get("method", "manual")
+    if method not in {"manual", "camera", "import"}:
+        return api_error("Attendance method must be manual, camera, or import.")
     db = get_db()
     student = db.execute("SELECT * FROM students WHERE id = ? AND status = 'active'", (student_ref,)).fetchone()
     if not student:
@@ -125,7 +138,7 @@ def mark_attendance():
         return api_error("That active student could not be found.", 404)
     now = datetime.now()
     try:
-        db.execute("INSERT INTO attendance (student_id, attendance_date, check_in, method, confidence) VALUES (?, ?, ?, ?, ?)", (student["id"], today_iso(), now.strftime("%H:%M"), payload.get("method", "manual"), payload.get("confidence")))
+        db.execute("INSERT INTO attendance (student_id, attendance_date, check_in, method, confidence) VALUES (?, ?, ?, ?, ?)", (student["id"], today_iso(), now.strftime("%H:%M"), method, payload.get("confidence")))
         db.commit()
         result = db.execute("SELECT a.*, s.name, s.student_id AS roll_number, s.program, s.avatar FROM attendance a JOIN students s ON s.id = a.student_id WHERE a.id = last_insert_rowid()").fetchone()
     except sqlite3.IntegrityError:
@@ -137,8 +150,13 @@ def mark_attendance():
 
 @app.get("/api/reports")
 def reports():
-    end = date.fromisoformat(request.args.get("end", today_iso()))
-    start = date.fromisoformat(request.args.get("start", (end - timedelta(days=6)).isoformat()))
+    try:
+        end = parse_date(request.args.get("end"), date.today())
+        start = parse_date(request.args.get("start"), end - timedelta(days=6))
+    except ValueError as exc:
+        return api_error(str(exc))
+    if start > end:
+        return api_error("The report start date must be before the end date.")
     db = get_db()
     rows = db.execute("""
         SELECT s.id, s.name, s.student_id AS roll_number, s.program,
@@ -164,12 +182,21 @@ def export_report():
 
 @app.get("/api/health")
 def health():
-    return jsonify({"status": "ok", "service": APP_NAME, "timestamp": datetime.utcnow().isoformat() + "Z", "recognition": recognition.status()})
+    return jsonify({"status": "ok", "service": APP_NAME, "timestamp": datetime.now(timezone.utc).isoformat(), "recognition": recognition.status()})
 
 
 @app.get("/api/recognition/status")
 def recognition_status():
     return jsonify(recognition.status())
+
+
+@app.after_request
+def add_security_headers(response):
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "DENY")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    response.headers.setdefault("Permissions-Policy", "camera=(self), microphone=()")
+    return response
 
 
 bootstrap()

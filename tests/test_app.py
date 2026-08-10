@@ -58,6 +58,13 @@ def test_attendance_is_idempotent_per_day(client):
     assert any(record["student_id"] == 1 for record in records)
 
 
+def test_api_rejects_invalid_dates_and_methods(client):
+    assert client.get("/api/attendance?date=tomorrow").status_code == 400
+    assert client.get("/api/reports?start=2026-08-10&end=2026-08-01").status_code == 400
+    invalid_method = client.post("/api/attendance", json={"student_id": 2, "method": "telepathy"})
+    assert invalid_method.status_code == 400
+
+
 def test_report_and_csv_export(client):
     report = client.get("/api/reports").get_json()
     assert report["start"] < report["end"]
@@ -67,4 +74,3 @@ def test_report_and_csv_export(client):
     assert export.status_code == 200
     assert export.mimetype == "text/csv"
     assert b"Student,Student ID" in export.data
-
