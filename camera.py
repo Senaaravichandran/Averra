@@ -7,12 +7,13 @@ Press q to close the webcam. A recognized person is marked once per day.
 from datetime import datetime
 import cv2
 
-from app import app
-from database import get_db
-from services.recognition import RecognitionService
+from averra import create_app
+from averra.db import get_db
+from averra.services.recognition import RecognitionService
 
 
 def run() -> None:
+    app = create_app()
     recognition = RecognitionService()
     if not recognition.available:
         raise SystemExit(f"Camera recognition is not available. {recognition.error}")
@@ -38,7 +39,7 @@ def run() -> None:
                 cv2.rectangle(frame, (left, bottom - 28), (right, bottom), color, cv2.FILLED)
                 cv2.putText(frame, f"{match['name']}  {round(match['confidence'] * 100)}%", (left + 8, bottom - 9), cv2.FONT_HERSHEY_SIMPLEX, .55, (255, 255, 255), 1, cv2.LINE_AA)
                 if known and match["name"] not in marked:
-                    db = get_db()
+                    db = get_db(app.config["DATABASE_PATH"])
                     student = db.execute("SELECT id FROM students WHERE lower(name) = lower(?) AND status = 'active'", (match["name"],)).fetchone()
                     if student:
                         try:
@@ -58,4 +59,3 @@ def run() -> None:
 
 if __name__ == "__main__":
     run()
-

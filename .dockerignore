@@ -1,0 +1,15 @@
+.git
+.github
+.venv
+attendance_env
+__pycache__
+*.pyc
+.pytest_cache
+instance
+*.sqlite3
+*.db
+students
+tests
+README.md
+.env
+

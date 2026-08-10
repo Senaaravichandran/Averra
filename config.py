@@ -1,11 +1,9 @@
-"""Runtime configuration for Averra."""
+"""Backward-compatible configuration constants."""
 
-from pathlib import Path
-import os
+from averra.config import BASE_DIR, Settings
 
 
-BASE_DIR = Path(__file__).resolve().parent
-DATABASE_PATH = Path(os.getenv("AVERRA_DATABASE", BASE_DIR / "instance" / "averra.sqlite3"))
-SECRET_KEY = os.getenv("AVERRA_SECRET", "averra-development-key")
+_settings = Settings.from_env()
+DATABASE_PATH = _settings.database_path
+SECRET_KEY = _settings.secret_key
 APP_NAME = "Averra"
-

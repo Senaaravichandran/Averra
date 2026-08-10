@@ -11,8 +11,9 @@ Averra is a focused attendance workspace for modern classrooms and teams. It com
 - Manual attendance marking with duplicate protection per day.
 - Camera check-in page with browser permission flow and a local recognition runner.
 - SQLite-backed reports with date ranges and CSV export.
-- Health and recognition status endpoints.
+- Health and recognition status endpoints, plus a versioned `/api/v1` integration surface.
 - Automated API tests for the important user journeys.
+- Production application factory, versioned migrations, auth-ready sessions, container image, and readiness probes.
 
 ## Run locally
 
@@ -45,17 +46,33 @@ The camera opens and stays active until `q` is pressed. Recognized faces receive
 pytest
 ```
 
+## Deployment
+
+For a production-shaped single-node deployment, see [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md):
+
+```powershell
+Copy-Item .env.example .env
+docker compose up --build -d
+```
+
+The application reads credentials from environment variables only. No credentials are committed. The architecture and scaling boundary are documented in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
 ## Project map
 
 ```text
-app.py                 Flask routes and JSON API
+app.py                 Compatibility entrypoint for the application factory
+averra/                Production application package
+  api.py               Versioned JSON routes and auth boundary
+  config.py            Environment-driven settings
+  db.py                Connections and migration runner
+  services/            Recognition and future integrations
+database.py            Compatibility database wrapper
+migrations/            Ordered SQL migrations
 camera.py              OpenCV camera runner (press q to quit)
-database.py            SQLite schema and connections
-seed.py                Safe demo workspace seeding
-services/recognition.py Optional face-recognition adapter
+docs/                  Deployment and architecture runbooks
 templates/index.html   Responsive Averra application shell
 static/css/            Design system and camera surface styles
-static/js/app.js       API-connected browser interactions
+static/js/             API-connected browser interactions and modules
 tests/                 API and workflow coverage
 ```
 
