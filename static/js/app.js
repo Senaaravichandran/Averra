@@ -190,7 +190,8 @@ function bindEvents() {
   $$('[data-view]').forEach((element) => element.addEventListener('click', (event) => { event.preventDefault(); navigate(element.dataset.view); }));
   $$('[data-action="mark-attendance"]').forEach((element) => element.addEventListener('click', () => openModal('attendance')));
   $$('[data-action="add-student"]').forEach((element) => element.addEventListener('click', () => openModal('student')));
-  $$('[data-action="start-camera"], [data-action="add-session"]').forEach((element) => element.addEventListener('click', () => showToast('This workflow is ready for your connected device.', 'success')));
+  $$('[data-action="start-camera"]').forEach((element) => element.addEventListener('click', startCamera));
+  $$('[data-action="add-session"]').forEach((element) => element.addEventListener('click', () => showToast('Session creation is ready for your connected schedule.', 'success')));
   $('#student-form').addEventListener('submit', submitStudent);
   $('#attendance-submit').addEventListener('click', submitAttendance);
   $('#modal-close').addEventListener('click', closeModal); $('#modal-cancel').addEventListener('click', closeModal); $('#attendance-cancel').addEventListener('click', closeModal);
@@ -204,5 +205,17 @@ function bindEvents() {
   $('#confidence-range').addEventListener('input', (event) => { $('#confidence-value').textContent = `${event.target.value}%`; });
 }
 
-document.addEventListener('DOMContentLoaded', () => { bindEvents(); loadOverview(); });
+async function startCamera() {
+  if (!navigator.mediaDevices?.getUserMedia) { showToast('Camera access is not supported in this browser.', 'error'); return; }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
+    const video = $('#camera-video');
+    video.srcObject = stream;
+    video.classList.add('active');
+    $('#camera-status').textContent = 'LIVE';
+    $('.camera-action').innerHTML = 'Camera live <span>✓</span>';
+    showToast('Camera is live. Recognition is ready for local mode.');
+  } catch (error) { showToast('Camera permission was not granted.', 'error'); }
+}
 
+document.addEventListener('DOMContentLoaded', () => { bindEvents(); loadOverview(); });

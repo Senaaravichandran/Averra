@@ -11,11 +11,13 @@ from flask import Flask, jsonify, render_template, request, send_file
 from config import APP_NAME, SECRET_KEY
 from database import get_db, init_db, rows_to_dict
 from seed import seed
+from services.recognition import RecognitionService
 
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = SECRET_KEY
 app.config["JSON_SORT_KEYS"] = False
+recognition = RecognitionService()
 
 
 def bootstrap() -> None:
@@ -162,7 +164,12 @@ def export_report():
 
 @app.get("/api/health")
 def health():
-    return jsonify({"status": "ok", "service": APP_NAME, "timestamp": datetime.utcnow().isoformat() + "Z"})
+    return jsonify({"status": "ok", "service": APP_NAME, "timestamp": datetime.utcnow().isoformat() + "Z", "recognition": recognition.status()})
+
+
+@app.get("/api/recognition/status")
+def recognition_status():
+    return jsonify(recognition.status())
 
 
 bootstrap()
@@ -170,4 +177,3 @@ bootstrap()
 
 if __name__ == "__main__":
     app.run(debug=True, port=5050)
-
