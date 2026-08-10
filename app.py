@@ -153,7 +153,7 @@ def reports():
 
 @app.get("/api/reports/export")
 def export_report():
-    report = reports()[0].get_json()
+    report = reports().get_json()
     output = io.StringIO()
     writer = csv.writer(output)
     writer.writerow(["Student", "Student ID", "Program", "Present days", "Period start", "Period end"])
